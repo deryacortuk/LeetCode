@@ -10,10 +10,12 @@ Input: s = "aa", p = "a"
 Output: false
 Explanation: "a" does not match the entire string "aa"."
 
+# Dynamic Programming ( Tabulation: Bottom Up Dynamic Programming , Memoization: Top-Down Dynamic Programming ) 
 
 Time Complexity: O(mn)
 Space Complexity: O(mn)
 
+# Memoization
 
 1. Solution
 
