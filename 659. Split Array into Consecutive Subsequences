@@ -1,0 +1,67 @@
+"You are given an integer array nums that is sorted in non-decreasing order.
+
+Determine if it is possible to split nums into one or more subsequences such that both of the following conditions are true:
+
+Each subsequence is a consecutive increasing sequence (i.e. each integer is exactly one more than the previous integer).
+All subsequences have a length of 3 or more.
+Return true if you can split nums according to the above conditions, or false otherwise.
+
+A subsequence of an array is a new array that is formed from the original array by deleting some (can be none) of the elements without disturbing the relative positions of the remaining elements. (i.e., [1,3,5] is a subsequence of [1,2,3,4,5] while [1,3,2] is not).
+
+ 
+
+Example 1:
+
+Input: nums = [1,2,3,3,4,5]
+Output: true
+Explanation: nums can be split into the following subsequences:
+[1,2,3,3,4,5] --> 1, 2, 3
+[1,2,3,3,4,5] --> 3, 4, 5"
+
+1. Solution
+
+
+class Solution:
+    def isPossible(self, nums: List[int]) -> bool:
+        if len(nums) < 3: 
+            return False
+
+        frequency = collections.Counter(nums)
+        subsequence = collections.defaultdict(int)
+
+        for i in nums:
+
+            if frequency[i] == 0:
+                continue
+
+            frequency[i] -= 1
+
+            # option 1 - add to an existing subsequence
+            if subsequence[i-1] > 0:
+                subsequence[i-1] -= 1
+                subsequence[i] += 1
+
+            # option 2 - create a new subsequence 
+            elif frequency[i+1] and frequency[i+2]:
+                frequency[i+1] -= 1
+                frequency[i+2] -= 1
+                subsequence[i+2] += 1
+
+            else:
+                return False
+
+        return True
+
+2.Solution
+
+from heapq import heappush, heappop
+class Solution:
+    def isPossible(self, nums: List[int]) -> bool:
+        tails = defaultdict(list)
+        for n in nums:
+            if tails[n-1]:
+                heappush(tails[n], heappop(tails[n-1])+1)
+            else:
+                heappush(tails[n], 1)
+        return all(l >= 3 for stuff in tails.values() for l in stuff)
+     
