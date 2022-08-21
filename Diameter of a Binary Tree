@@ -10,7 +10,7 @@ class Node:
         self.left = self.right = None
 
 class Height:
-    def __init(self):
+    def __init__(self):
         self.h = 0
 
 class Solution:
