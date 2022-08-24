@@ -1,0 +1,64 @@
+"  Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, 
+and nums[i] + nums[j] + nums[k] == 0.
+
+Notice that the solution set must not contain duplicate triplets."
+
+1. Solution
+
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
+        ans = set()
+        
+        for index in range(len(nums)-2):
+            
+            first_num = nums[index]
+            left = index + 1
+            right = len(nums) - 1
+
+            while(left < right):
+                
+                if(nums[left] + nums[right] + first_num == 0):
+                    if((first_num, nums[left], nums[right]) not in ans):
+                        ans.add((first_num, nums[left], nums[right]))
+                    left += 1
+                    right -= 1
+                    
+                elif(nums[left] + nums[right] + first_num >= 0):
+                    right -= 1
+                    
+                else:
+                    left += 1
+        
+        return list(ans)
+            
+                
+        
+        
+
+ 
+                    
+2. Solution
+
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        result = []
+        nums.sort()
+        for i, num in enumerate(nums):
+            summation = 0
+            
+            low = i+1
+            high = len(nums) - 1
+            
+            while low < high:
+                summation = num + nums[low] + nums[high]
+                if summation == 0:
+                    candidate = [num, nums[low], nums[high]]
+                    if candidate not in result:
+                        result.append(candidate)
+                if summation > 0:
+                    high -= 1
+                else:
+                    low += 1
+                    
+        return result
