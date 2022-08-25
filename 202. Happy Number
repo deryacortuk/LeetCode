@@ -1,0 +1,40 @@
+# Coding Patterns: Fast & Slow Pointers
+
+" Write an algorithm to determine if a number n is happy.
+
+A happy number is a number defined by the following process:
+
+Starting with any positive integer, replace the number by the sum of the squares of its digits.
+Repeat the process until the number equals 1 (where it will stay), or it loops endlessly in a cycle which does not include 1.
+Those numbers for which this process ends in 1 are happy.
+Return true if n is a happy number, and false if not. "
+
+1. Solution
+
+class Solution:
+    def isHappy(self, n: int) -> bool:
+        d = set()
+        
+        while n != 0 and (not n in d):
+            d.add(n)
+            n = sum([int(x)**2 for x in str(n)])
+        return n == 1
+        
+2. Solution
+
+class Solution:
+    def isHappy(self, n: int) -> bool:
+        def get_sum(n: int) -> list:
+            nums = []
+            while n:
+                nums.append(n % 10)
+                n //= 10
+            return sum([num ** 2 for num in nums])
+
+        seen = set()
+        while n != 1:
+            n = get_sum(n)
+            if n in seen:
+                return False
+            seen.add(n)
+        return True
