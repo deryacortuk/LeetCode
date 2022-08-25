@@ -1,0 +1,72 @@
+" Given two strings s and p, return an array of all the start indices of p's anagrams in s. You may return the answer in any order.
+
+An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once."
+
+1. Solution
+
+class Solution:
+    def findAnagrams(self, s: str, p: str) -> List[int]:
+        res = []
+        d1 = collections.Counter(p)
+        window = s[:len(p)-1]
+        d2 = collections.Counter(window)
+        for start in range(len(s)-len(p)+1):
+            end = start + len(p)-1            
+            d2[s[end]] = d2.get(s[end], 0) + 1
+            if d1 == d2:
+                res.append(start)
+           
+            d2[s[start]] -= 1
+            if d2[s[start]]==0:
+                del d2[s[start]]
+                
+        return res
+        
+
+2. Solution
+
+class Solution:
+    def findAnagrams(self, s: str, p: str) -> List[int]:
+        m = len(p)
+        ans = []
+        p_count = {}
+        for char in p:
+            p_count[char] = p_count.get(char, 0) + 1
+        
+        s_count = {}
+        for i, char in enumerate(s):
+            s_count[char] = s_count.get(char, 0) + 1
+            if i >= m:
+                start = s[i - m]
+                s_count[start] -= 1
+                if s_count[start] == 0:
+                    s_count.pop(start)
+
+            if s_count == p_count:
+                ans.append(i + 1 - m)
+        
+        return ans
+
+3. Solution
+
+class Solution:
+    def findAnagrams(self, s: str, p: str) -> List[int]:
+        if len(p) > len(s): return []
+        pCount, sCount = {}, {}
+        for i in range(len(p)):
+            pCount[p[i]] = 1 + pCount.get(p[i], 0)
+            sCount[s[i]] = 1 + sCount.get(s[i], 0)
+            
+        res = [0] if sCount == pCount else []
+        l = 0
+        for r in range(len(p), len(s)):
+            sCount[s[r]] = 1 + sCount.get(s[r], 0)
+            sCount[s[l]] -= 1
+            
+            if sCount[s[l]] ==0:
+                sCount.pop(s[l])
+                
+            l +=1
+            if sCount == pCount:
+                res.append(l)
+        return res
