@@ -1,0 +1,67 @@
+" Given two strings s and t of lengths m and n respectively, return the minimum window substring of s such that every character
+in t (including duplicates) is included in the window. If there is no such substring, return the empty string "".
+
+The testcases will be generated such that the answer is unique.
+
+A substring is a contiguous sequence of characters within the string. 
+
+Example 1:
+
+Input: s = "ADOBECODEBANC", t = "ABC"
+Output: "BANC"
+Explanation: The minimum window substring "BANC" includes 'A', 'B', and 'C' from string t."
+
+1. Solution
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        
+        count = Counter(t)
+        required = len(t)
+        bestLeft = -1
+        minLength = len(s) + 1
+
+        l = 0
+        for r, c in enumerate(s):
+            count[c] -= 1
+            if count[c] >= 0:
+                required -= 1
+            while required == 0:
+                if r - l + 1 < minLength:
+                    bestLeft = l
+                    minLength = r - l + 1
+                count[s[l]] += 1
+                if count[s[l]] > 0:
+                    required += 1
+                l += 1
+
+        return '' if bestLeft == -1 else s[bestLeft: bestLeft + minLength]
+        
+
+2.Solution
+
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        check = Counter(t)
+        start = 0
+        end = 0
+        result = [float('inf'),start,end]
+        limit = len(s)
+        n = len(t)
+        matched = 0
+        while end<limit:
+            if matched!=len(check):
+                if s[end] in check:
+                    check[s[end]] -=1
+                    if check[s[end]] == 0:
+                        matched +=1
+            while start<=(end-n+1) and matched == len(check):
+                if result[0]>(end-start+1):
+                    result = [(end-start+1),start,end]
+                if s[start] in check:
+                    check[s[start]] += 1
+                    if check[s[start]] == 1:
+                        matched -= 1
+                start+=1
+            end +=1
+        return '' if result[0] == float('inf') else s[result[1]:result[2]+1]    
+                
