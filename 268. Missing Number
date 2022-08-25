@@ -1,0 +1,47 @@
+#  Coding Patterns: Cyclic Sort
+" Given an array nums containing n distinct numbers in the range [0, n], return the only number in the range that is missing from the array."
+
+# Time Complexity: O(N) + O(N - 1) which is asymptotically equivalent to O(N)
+
+# Space Complexity: O(1), algorithm runs in constant space.
+
+1. Solution
+
+class Solution:
+    def missingNumber(self, nums: List[int]) -> int:
+        start = 0
+
+        while start < len(nums):
+            num = nums[start]
+            if num < len(nums) and num != start:
+                nums[start], nums[num] = nums[num], nums[start]
+            else:
+                start += 1
+
+        for i in range(len(nums)):
+            if nums[i] != i:
+                return i
+
+        return len(nums)
+        
+2. Solution
+
+class Solution:
+    def missingNumber(self, nums: List[int]) -> int:
+        target_sum = len(nums) * (len(nums) + 1) // 2
+        cur_sum = 0
+        
+        for n in nums:
+            cur_sum += n
+        
+        return target_sum - cur_sum
+        
+  2. Solution
+  
+  class Solution:
+    def missingNumber(self, nums: List[int]) -> int:
+        for i in range(0, len(nums) + 1):
+            if i not in nums:
+                return i
+
+ 
