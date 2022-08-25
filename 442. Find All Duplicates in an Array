@@ -1,0 +1,31 @@
+" Given an integer array nums of length n where all the integers of nums are in the range [1, n] and each integer appears once or twice, 
+return an array of all the integers that appears twice.
+
+You must write an algorithm that runs in O(n) time and uses only constant extra space."
+
+1. Solution
+
+class Solution:
+    def findDuplicates(self, nums: List[int]) -> List[int]:
+        from collections import Counter
+        
+        cn = Counter(nums)
+        ls = []
+        for i, j in cn.items():
+            if j > 1:
+                ls.append(i)
+        return ls
+        
+ 2. Solution
+ 
+ class Solution:
+    def findDuplicates(self, nums: List[int]) -> List[int]:
+        result =[]
+        hashset = set()
+        
+        for i in range(0,len(nums)):
+            if nums[i] not in hashset:
+                hashset.add(nums[i])
+            else:
+                result.append(nums[i])
+        return result
