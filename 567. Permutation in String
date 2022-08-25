@@ -1,0 +1,74 @@
+" Given two strings s1 and s2, return true if s2 contains a permutation of s1, or false otherwise.
+
+In other words, return true if one of s1's permutations is the substring of s2. 
+
+Example 1:
+
+Input: s1 = "ab", s2 = "eidbaooo"
+Output: true
+Explanation: s2 contains one permutation of s1 ("ba")."
+
+1. Solution
+
+class Solution:
+    def checkInclusion(self, s1: str, s2: str) -> bool:
+        
+        s1_counter = Counter(s1)
+        
+        s1_len = len(s1)
+        
+        for i in range(len(s2) - s1_len + 1):
+            
+            if Counter(s2[i:i + s1_len]) == s1_counter:
+                return True
+        return False
+        
+2.Solution
+
+class Solution:
+    def checkInclusion(self, s1: str, s2: str) -> bool:
+        if len(s1) > len(s2): return False
+        map1 = {}
+        map2 = {}
+        res = False
+        for x in s1:
+            map1[x] = map1.get(x, 0) + 1
+
+        for y in range(len(s1)):
+            map2[s2[y]] = map2.get(s2[y], 0) + 1
+        if map1 == map2: return True
+
+        for z in range(len(s2)):
+            if map1 == map2:
+                res = True
+                break
+            elif z > 0 and z+len(s1) <= len(s2):
+                map2[s2[z-1]] = map2[s2[z-1]] - 1
+                if map2[s2[z-1]] <= 0:
+                    map2.pop(s2[z-1])
+
+                map2[s2[z+len(s1)-1]] = map2.get(s2[z+len(s1)-1], 0) + 1
+
+        return res
+        
+3.Solution
+
+class Solution:
+    def checkInclusion(self, s1: str, s2: str) -> bool:
+	    cntr, w, match = Counter(s1), len(s1), 0     
+
+	    for i in range(len(s2)):
+		    if s2[i] in cntr:
+			    if not cntr[s2[i]]: match -= 1
+			    cntr[s2[i]] -= 1
+			    if not cntr[s2[i]]: match += 1
+
+		    if i >= w and s2[i-w] in cntr:
+			    if not cntr[s2[i-w]]: match -= 1
+			    cntr[s2[i-w]] += 1
+			    if not cntr[s2[i-w]]: match += 1
+
+		    if match == len(cntr):
+			    return True
+
+	    return False
