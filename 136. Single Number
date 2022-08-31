@@ -1,0 +1,23 @@
+"Given a non-empty array of integers nums, every element appears twice except for one. Find that single one.
+
+You must implement a solution with a linear runtime complexity and use only constant extra space."
+
+# Bitwise XOR Solution
+# It returns 0 if we take XOR of two same numbers.
+# It returns the same number if we XOR with 0.
+# So we can XOR all the numbers in the input; duplicate numbers will zero out each other and we will be left with the single number.
+
+class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+        result = 0
+        for i in nums:
+            result = result ^ i
+        return result
+        
+     # Time Complexity: O(N) where N is the total number of elements in the input array.  Space Complexity: O(1)  
+        
+  # Another Solution
+  
+  class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+        return (2*sum(set(nums)) - sum(nums)) 
